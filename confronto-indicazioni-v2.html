@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Indicazioni nazionali 2012 e Nuove Indicazioni 2025: confronto</title>
+<style>
+:root{--bg:#f6f3ec;--fg:#1f2a33;--mut:#5b6670;--card:#fffdf8;--line:#d9d3c4;--ac:#b4472b;--acbg:#f3dfd7;--b:#2d5f7a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171d22;--fg:#ece8dd;--mut:#a3adb5;--card:#1f272d;--line:#34404a;--ac:#e6896b;--acbg:#3a2a25;--b:#7fb2cc}}
+:root[data-theme="dark"]{--bg:#171d22;--fg:#ece8dd;--mut:#a3adb5;--card:#1f272d;--line:#34404a;--ac:#e6896b;--acbg:#3a2a25;--b:#7fb2cc}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Georgia,'Times New Roman',serif;line-height:1.5}
+.w{max-width:1040px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:clamp(26px,5vw,42px);line-height:1.1;margin:0 0 8px}
+.sub{color:var(--mut);margin:0 0 22px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);z-index:5}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px}
+.lab{font-size:13px;color:var(--mut);text-transform:uppercase;letter-spacing:.06em;min-width:64px}
+button.c{font:inherit;font-size:15px;padding:6px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+button.c[aria-pressed="true"]{background:var(--ac);border-color:var(--ac);color:#fff}
+input{font:inherit;font-size:15px;padding:7px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);width:100%;max-width:340px}
+.grid{display:grid;gap:16px;margin-top:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h2{font-size:21px;margin:0 0 4px}
+.tag{font-size:12px;color:var(--ac);background:var(--acbg);padding:2px 9px;border-radius:99px;display:inline-block;margin-bottom:10px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.col h3{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--b);margin:0 0 4px}
+.col p{margin:0;font-size:16px}
+.col.n h3{color:var(--ac)}
+.empty{color:var(--mut);padding:30px 0;text-align:center}
+.foot{margin-top:30px;color:var(--mut);font-size:14px}
+@media(max-width:620px){.cols{grid-template-columns:1fr}}
+</style></head><body><div class="w">
+<h1>Indicazioni nazionali 2012 e Nuove Indicazioni 2025</h1>
+<p class="sub">Confronto per ordine di scuola, area e disciplina. Scegli i filtri o cerca una parola.</p>
+<div class="bar">
+<div class="row"><span class="lab">Ordine</span><span id="fo"></span></div>
+<div class="row"><span class="lab">Area</span><span id="fa"></span></div>
+<div class="row"><input id="q" type="search" placeholder="Cerca (es. IA, Latino, famiglia)" aria-label="Cerca"></div>
+</div>
+<div id="out" class="grid"></div>
+<p class="foot">Sintesi ricavata dai due PDF: i punti tra parentesi indicano il confronto con il 2012. Il testo 2025 è «Materiali per il dibattito pubblico» e può ancora cambiare; verifica sul testo prima di citare.</p>
+</div>
+<script>
+var G=[
+["Struttura del documento","Impianto","all","Traguardi e obiettivi di apprendimento per disciplina (cl. 3 e 5 primaria, cl. 3 secondaria).","Stessi snodi, ma con «perché si studia», finalità, competenze attese, conoscenze per nuclei, suggerimenti metodologici e moduli interdisciplinari."],
+["Digitale e intelligenza artificiale","Impianto","all","Nessun richiamo all’intelligenza artificiale.","Circa 13 richiami all’IA e sezioni di ibridazione tecnologica per disciplina."],
+["Novità di struttura","Impianto","all","—","Latino per l’educazione linguistica, Strumento musicale come sezione propria, premessa Istruzione integrata STEM."],
+["Educazione civica","Impianto","all","Cittadinanza e Costituzione come capitolo trasversale.","Educazione civica richiamata più volte (circa 20) nel testo."],
+["Ruolo del docente: identità","Docente e famiglia","all","Parte di una comunità professionale che contestualizza le Indicazioni, «testo aperto».","«Curriculum maker» del progetto formativo; testimone in prima persona della passione per i saperi."],
+["Ruolo del docente: progettazione","Docente e famiglia","all","Scelte su contenuti, metodi, organizzazione e valutazione affidate alle scuole.","Curricolo verticale di istituto tra curricolo formale, familiare e di istituto, con meno conoscenze ma più approfondite."],
+["Ruolo del docente: valutazione","Docente e famiglia","all","Responsabilità dei docenti; la valutazione precede, accompagna e segue il percorso.","Processo collegiale con criteri condivisi, rubriche e osservazione; meno adempimenti burocratici."],
+["Famiglia: rapporto con la scuola","Docente e famiglia","all","Alleanza educativa con i genitori, con relazioni costanti e non solo nei momenti critici.","Scuola e famiglia «due colonne portanti»; nuovo patto di alleanza e corresponsabilità."],
+["Famiglia e territorio: strumenti","Docente e famiglia","all","Corresponsabilità formativa e dialogo; scuola legata al territorio.","Patto di corresponsabilità; scuola comunità educante aperta a enti territoriali e università; valutazione condivisa con le famiglie."],
+["Campi di esperienza","Infanzia","inf","Cinque campi, con traguardi per lo sviluppo della competenza.","Stessi cinque campi, con finalità, competenze attese, obiettivi specifici e suggerimenti metodologici."],
+["Finalità e raccordo con la primaria","Infanzia","inf","Identità, autonomia, competenza, cittadinanza.","Autonomia e benessere, relazioni cooperative, contrasto alle povertà educative, sistema integrato 0-6; sezione «Dalla scuola dell’infanzia alla primaria»."]];
+var D=[
+["Italiano","Lingue","Ortografia e punteggiatura da fissare presto, senza «spontaneismo»; lessico e lettura.","Letteratura come gusto di leggere, con larga parte di opere italiane; italiano L2 nelle classi multilingui."],
+["Latino (LEL)","Lingue","Non previsto.","Novità: Latino per l’educazione linguistica, da avviare negli ultimi due anni (assente nel 2012)."],
+["Inglese","Lingue","Livello atteso A1-A2 (2012: A1); ascolto con sottotitoli e audiodescrizioni.","Livello A2-B1 (2012: A2); interculturalità, inglese globale, DigComp e GreenComp."],
+["Seconda lingua comunitaria","Lingue","Non prevista.","Resta il livello A1 (riferimento QCER 2020)."],
+["Storia","Storia e Geografia","Grandi ere, linea del tempo, radici della cultura occidentale; in classe terza primi principi della Costituzione.","Conoscenza storica e analisi di fonti narrative, documentarie, archeologiche; storia italiana e Stato nazionale."],
+["Geografia","Storia e Geografia","Orientamento e cartografia (simboli, scala); luoghi vicini come ambiente di apprendimento.","Paesaggio, transcalarità e territorializzazione; clima, migrazioni, disuguaglianze; approccio sistemico."],
+["Matematica","STEM","Problemi, strategie e modellizzazione di situazioni quotidiane.","Astrazione più forte, prime dimostrazioni (es. Teorema di Pitagora)."],
+["Scienze","STEM","Osservare, formulare ipotesi, sperimentare; ecosistemi.","Fenomeni naturali e antropici con fisica e scienze naturali; sfide scientifico-tecnologiche."],
+["Tecnologia","STEM","Trasformazione di risorse, energia e impatto ambientale; modelli sostenibili.","Sistemi tecnologici e rapporto con i viventi; processi produttivi e forme di energia."],
+["Istruzione integrata STEM","STEM","Premessa comune: metodo laboratoriale e interdisciplinarità.","Stessa premessa, con aggiornamento delle Linee guida STEM."],
+["Musica","Arti e movimento","Parametri del suono, ascolto attivo, improvvisazione e composizione.","Esecuzione vocale e strumentale, individuale e di gruppo; analisi di timbro e dinamica."],
+["Strumento musicale","Arti e movimento","Non previsto.","Sezione propria (2012: solo rinvio a norme specifiche): notazione e riproduzione di frasi ascoltate."],
+["Arte e immagine","Arti e movimento","Strumenti digitali (foto, video) con tecniche pittoriche; prospettiva e chiaroscuro di base.","Tecniche avanzate, progetti visivi digitali o tradizionali, lettura di testi visivi complessi."],
+["Educazione fisica","Arti e movimento","Cura di sé, stile di vita sano, padronanza dei movimenti.","Benessere psico-fisico, sicurezza anche fuori scuola, responsabilità nel gruppo."]];
+var O=["Tutti","Infanzia","Primaria","Secondaria di primo grado"];
+var A=["Tutte","Impianto","Docente e famiglia","Infanzia","Lingue","Storia e Geografia","STEM","Arti e movimento"];
+var so="Tutti",sa="Tutte",sq="";
+function chips(id,arr,get,set){var h=document.getElementById(id);h.innerHTML="";arr.forEach(function(x){var b=document.createElement("button");b.className="c";b.textContent=x;b.setAttribute("aria-pressed",get()===x);b.onclick=function(){set(x);chips("fo",O,function(){return so},function(v){so=v});chips("fa",A,function(){return sa},function(v){sa=v});render()};h.appendChild(b)})}
+function col(h,t,n){return '<div class="col'+(n?' n':'')+'"><h3>'+h+'</h3><p>'+t+'</p></div>'}
+function card(t,tag,body){return '<div class="card"><span class="tag">'+tag+'</span><h2>'+t+'</h2><div class="cols">'+body+'</div></div>'}
+function render(){var out=[];
+G.forEach(function(g){if(g[2]==="inf"&&so!=="Tutti"&&so!=="Infanzia")return;if(so==="Infanzia"&&g[2]!=="inf"&&g[1]!=="Impianto"&&g[1]!=="Docente e famiglia")return;
+out.push([g[0],g[1],card(g[0],g[1],col("2012",g[3],0)+col("2025",g[4],1))])});
+D.forEach(function(d){if(so==="Infanzia")return;var b="";
+if(so==="Tutti"||so==="Primaria")b+=col("Primaria",d[2],0);
+if(so==="Tutti"||so==="Secondaria di primo grado")b+=col("Secondaria di primo grado",d[3],1);
+out.push([d[0],d[1],card(d[0],d[1],b)])});
+var q=sq.toLowerCase();
+var r=out.filter(function(x){return(sa==="Tutte"||x[1]===sa)&&(!q||x[2].toLowerCase().indexOf(q)>-1)});
+document.getElementById("out").innerHTML=r.length?r.map(function(x){return x[2]}).join(""):'<p class="empty">Nessun risultato per questi filtri.</p>'}
+document.getElementById("q").oninput=function(e){sq=e.target.value;render()};
+chips("fo",O,function(){return so},function(v){so=v});chips("fa",A,function(){return sa},function(v){sa=v});render();
+</script></body></html>
